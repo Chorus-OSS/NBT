@@ -17,8 +17,6 @@ kotlin {
     linuxX64()
     mingwX64()
 
-    applyDefaultHierarchyTemplate()
-
     // TODO: Add more supported platforms
 
     sourceSets {
