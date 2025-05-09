@@ -19,22 +19,14 @@ data class LongArrayTag(private val data: List<Long> = listOf()) : Tag, List<Lon
     companion object : TagCodec<LongArrayTag> {
         override fun serialize(value: LongArrayTag, stream: Buffer, type: TagSerialization) {
             TagHelper.serializeList(value, stream, type) { long, st ->
-                when (type) {
-                    TagSerialization.BE -> st.writeLong(long)
-                    TagSerialization.LE -> st.writeLongLe(long)
-                    TagSerialization.NetworkLE -> st.writeLongVar(long)
-                }
+                TagHelper.serializeLong(long, st, type)
             }
         }
 
         override fun deserialize(stream: Buffer, type: TagSerialization): LongArrayTag {
             return LongArrayTag(
                 TagHelper.deserializeList(stream, type) {
-                    when (type) {
-                        TagSerialization.BE -> it.readLong()
-                        TagSerialization.LE -> it.readLongLe()
-                        TagSerialization.NetworkLE -> it.readLongVar()
-                    }
+                    TagHelper.deserializeLong(it, type)
                 }
             )
         }

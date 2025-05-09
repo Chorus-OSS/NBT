@@ -1,12 +1,41 @@
 package org.chorus_oss.nbt
 
 import kotlinx.io.*
-import org.chorus_oss.varlen.types.readIntVar
-import org.chorus_oss.varlen.types.readUIntVar
-import org.chorus_oss.varlen.types.writeIntVar
-import org.chorus_oss.varlen.types.writeUIntVar
+import org.chorus_oss.varlen.types.*
 
 object TagHelper {
+    fun serializeInt(value: Int, stream: Buffer, type: TagSerialization) {
+        when (type) {
+            TagSerialization.BE -> stream.writeInt(value)
+            TagSerialization.LE -> stream.writeIntLe(value)
+            TagSerialization.NetworkLE -> stream.writeIntVar(value)
+        }
+    }
+
+    fun deserializeInt(stream: Buffer, type: TagSerialization): Int {
+        return when (type) {
+            TagSerialization.BE -> stream.readInt()
+            TagSerialization.LE -> stream.readIntLe()
+            TagSerialization.NetworkLE -> stream.readIntVar()
+        }
+    }
+
+    fun serializeLong(value: Long, stream: Buffer, type: TagSerialization) {
+        when (type) {
+            TagSerialization.BE -> stream.writeLong(value)
+            TagSerialization.LE -> stream.writeLongLe(value)
+            TagSerialization.NetworkLE -> stream.writeLongVar(value)
+        }
+    }
+
+    fun deserializeLong(stream: Buffer, type: TagSerialization): Long {
+        return when (type) {
+            TagSerialization.BE -> stream.readLong()
+            TagSerialization.LE -> stream.readLongLe()
+            TagSerialization.NetworkLE -> stream.readLongVar()
+        }
+    }
+
     fun serializeString(value: String, stream: Buffer, type: TagSerialization) {
         when (type) {
             TagSerialization.BE -> stream.writeShort(value.length.toShort())
@@ -27,21 +56,13 @@ object TagHelper {
     }
 
     fun <T> deserializeList(stream: Buffer, type: TagSerialization, fn: (Buffer) -> T): List<T> {
-        val len = when (type) {
-            TagSerialization.BE -> stream.readInt()
-            TagSerialization.LE -> stream.readIntLe()
-            TagSerialization.NetworkLE -> stream.readIntVar()
-        }
+        val len = deserializeInt(stream, type)
 
         return List(len) { fn(stream) }
     }
 
     fun <T> serializeList(list: List<T>, stream: Buffer, type: TagSerialization, fn: (T, Buffer) -> Unit) {
-        when (type) {
-            TagSerialization.BE -> stream.writeInt(list.size)
-            TagSerialization.LE -> stream.writeIntLe(list.size)
-            TagSerialization.NetworkLE -> stream.writeIntVar(list.size)
-        }
+        serializeInt(list.size, stream, type)
 
         for (item in list) {
             fn(item, stream)

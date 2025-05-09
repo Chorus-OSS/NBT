@@ -19,22 +19,14 @@ data class IntArrayTag(private val data: List<Int> = listOf()) : Tag, List<Int> 
     companion object : TagCodec<IntArrayTag> {
         override fun serialize(value: IntArrayTag, stream: Buffer, type: TagSerialization) {
             TagHelper.serializeList(value, stream, type) { int, st ->
-                when (type) {
-                    TagSerialization.BE -> st.writeInt(int)
-                    TagSerialization.LE -> st.writeIntLe(int)
-                    TagSerialization.NetworkLE -> st.writeIntVar(int)
-                }
+                TagHelper.serializeInt(int, st, type)
             }
         }
 
         override fun deserialize(stream: Buffer, type: TagSerialization): IntArrayTag {
             return IntArrayTag(
                 TagHelper.deserializeList(stream, type) {
-                    when (type) {
-                        TagSerialization.BE -> it.readInt()
-                        TagSerialization.LE -> it.readIntLe()
-                        TagSerialization.NetworkLE -> it.readIntVar()
-                    }
+                    TagHelper.deserializeInt(it, type)
                 }
             )
         }
