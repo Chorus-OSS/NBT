@@ -8,7 +8,7 @@ object TagHelper {
         when (type) {
             TagSerialization.BE -> stream.writeInt(value)
             TagSerialization.LE -> stream.writeIntLe(value)
-            TagSerialization.NetworkLE -> stream.writeIntVar(value)
+            TagSerialization.NetLE -> stream.writeIntVar(value)
         }
     }
 
@@ -16,7 +16,7 @@ object TagHelper {
         return when (type) {
             TagSerialization.BE -> stream.readInt()
             TagSerialization.LE -> stream.readIntLe()
-            TagSerialization.NetworkLE -> stream.readIntVar()
+            TagSerialization.NetLE -> stream.readIntVar()
         }
     }
 
@@ -24,7 +24,7 @@ object TagHelper {
         when (type) {
             TagSerialization.BE -> stream.writeLong(value)
             TagSerialization.LE -> stream.writeLongLe(value)
-            TagSerialization.NetworkLE -> stream.writeLongVar(value)
+            TagSerialization.NetLE -> stream.writeLongVar(value)
         }
     }
 
@@ -32,7 +32,7 @@ object TagHelper {
         return when (type) {
             TagSerialization.BE -> stream.readLong()
             TagSerialization.LE -> stream.readLongLe()
-            TagSerialization.NetworkLE -> stream.readLongVar()
+            TagSerialization.NetLE -> stream.readLongVar()
         }
     }
 
@@ -40,7 +40,7 @@ object TagHelper {
         when (type) {
             TagSerialization.BE -> stream.writeShort(value.length.toShort())
             TagSerialization.LE -> stream.writeShortLe(value.length.toShort())
-            TagSerialization.NetworkLE -> stream.writeUIntVar(value.length.toUInt())
+            TagSerialization.NetLE -> stream.writeUIntVar(value.length.toUInt())
         }
         stream.write(value.encodeToByteArray())
     }
@@ -50,7 +50,7 @@ object TagHelper {
             when (type) {
                 TagSerialization.BE -> stream.readShort().toInt()
                 TagSerialization.LE -> stream.readShortLe().toInt()
-                TagSerialization.NetworkLE -> stream.readUIntVar().toInt()
+                TagSerialization.NetLE -> stream.readUIntVar().toInt()
             }
         ).decodeToString()
     }

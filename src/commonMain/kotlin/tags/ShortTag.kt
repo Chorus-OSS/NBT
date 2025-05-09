@@ -18,7 +18,7 @@ data class ShortTag(val data: Short = 0) : Tag {
             when (type) {
                 TagSerialization.BE -> stream.writeShort(value.data)
                 TagSerialization.LE,
-                TagSerialization.NetworkLE -> stream.writeShortLe(value.data)
+                TagSerialization.NetLE -> stream.writeShortLe(value.data)
             }
         }
 
@@ -27,7 +27,7 @@ data class ShortTag(val data: Short = 0) : Tag {
                 when (type) {
                     TagSerialization.BE -> stream.readShort()
                     TagSerialization.LE,
-                    TagSerialization.NetworkLE -> stream.readShortLe()
+                    TagSerialization.NetLE -> stream.readShortLe()
                 }
             )
         }

@@ -16,7 +16,7 @@ data class FloatTag(val data: Float = 0f) : Tag {
             when (type) {
                 TagSerialization.BE -> stream.writeFloat(value.data)
                 TagSerialization.LE,
-                TagSerialization.NetworkLE -> stream.writeFloatLe(value.data)
+                TagSerialization.NetLE -> stream.writeFloatLe(value.data)
             }
         }
 
@@ -25,7 +25,7 @@ data class FloatTag(val data: Float = 0f) : Tag {
                 when (type) {
                     TagSerialization.BE -> stream.readFloat()
                     TagSerialization.LE,
-                    TagSerialization.NetworkLE -> stream.readFloatLe()
+                    TagSerialization.NetLE -> stream.readFloatLe()
                 }
             )
         }

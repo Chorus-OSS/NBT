@@ -16,7 +16,7 @@ data class DoubleTag(val data: Double = 0.0) : Tag {
             when (type) {
                 TagSerialization.BE -> stream.writeDouble(value.data)
                 TagSerialization.LE,
-                TagSerialization.NetworkLE -> stream.writeDoubleLe(value.data)
+                TagSerialization.NetLE -> stream.writeDoubleLe(value.data)
             }
         }
 
@@ -25,7 +25,7 @@ data class DoubleTag(val data: Double = 0.0) : Tag {
                 when (type) {
                     TagSerialization.BE -> stream.readDouble()
                     TagSerialization.LE,
-                    TagSerialization.NetworkLE -> stream.readDoubleLe()
+                    TagSerialization.NetLE -> stream.readDoubleLe()
                 }
             )
         }
