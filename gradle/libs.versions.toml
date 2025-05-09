@@ -1,10 +1,10 @@
 [versions]
 kotlin = "2.1.10"
 kotlinx-io = "0.7.0"
-varlen = "f76e23aa76"
+varlen = "1.0-SNAPSHOT"
 
 [libraries]
 kotlin-stdlib = { module = "org.jetbrains.kotlin:kotlin-stdlib", version.ref = "kotlin" }
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-io = { module = "org.jetbrains.kotlinx:kotlinx-io-core", version.ref = "kotlinx-io" }
-varlen = { module = "com.github.Chorus-OSS:VarLen", version.ref = "varlen" }
+varlen = { module = "org.chorus_oss:varlen", version.ref = "varlen" }

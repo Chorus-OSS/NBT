@@ -3,19 +3,21 @@ plugins {
     `maven-publish`
 }
 
-group = "org.chorus_oss.nbt"
+group = "org.chorus_oss"
 version = "1.0-SNAPSHOT"
 description = "NBT"
 
 repositories {
+    mavenLocal()
     mavenCentral()
-    maven { url = uri("https://jitpack.io") }
 }
 
 kotlin {
     jvm()
     linuxX64()
     mingwX64()
+
+    applyDefaultHierarchyTemplate()
 
     // TODO: Add more supported platforms
 
@@ -32,18 +34,6 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.test)
             }
-        }
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            groupId = project.group.toString()
-            artifactId = project.name
-            version = project.version.toString()
-
-            from(components["kotlin"])
         }
     }
 }
