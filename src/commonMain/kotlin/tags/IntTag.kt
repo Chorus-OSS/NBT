@@ -1,48 +1,12 @@
 package org.chorus_oss.nbt.tags
 
-import java.util.*
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagType
 
-class IntTag : NumberTag<Int> {
-    override var data: Int = 0
-
-    constructor()
-
-    constructor(data: Int) {
-        this.data = data
-    }
-
-    override fun parseValue(): Int {
-        return this.data
-    }
-
-    override val id: Byte
-        get() = TAG_INT
+data class IntTag(val data: Int = 0) : Tag {
+    override val type: TagType = TagType.Int
 
     override fun toString(): String {
-        return "IntTag (data: $data)"
-    }
-
-    override fun toSNBT(): String {
-        return data.toString()
-    }
-
-    override fun toSNBT(space: Int): String {
-        return data.toString()
-    }
-
-    override fun copy(): IntTag {
-        return IntTag(data)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other)) {
-            val o = other as IntTag
-            return data == o.data
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(super.hashCode(), data, id)
+        return "$data"
     }
 }

@@ -1,42 +1,16 @@
 package org.chorus_oss.nbt.tags
 
-class IntArrayTag(var data: IntArray = IntArray(0)) : Tag<IntArray>() {
-    override fun parseValue(): IntArray {
-        return this.data
-    }
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagType
 
-    override val id: Byte
-        get() = TAG_INT_ARRAY
+data class IntArrayTag(private val data: List<Int> = listOf()) : Tag, List<Int> by data {
+    override val type: TagType = TagType.IntArray
 
     override fun toString(): String {
-        return "IntArrayTag " + " [" + data.size + " bytes]"
-    }
-
-    override fun toSNBT(): String {
-        return data.contentToString().replace("[", "[I;")
-    }
-
-    override fun toSNBT(space: Int): String {
-        return data.contentToString().replace("[", "[I;")
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other)) {
-            val intArrayTag = other as IntArrayTag
-            return (data.contentEquals(intArrayTag.data))
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        var result = super.hashCode()
-        result = 31 * result + data.contentHashCode()
-        return result
-    }
-
-    override fun copy(): Tag<IntArray> {
-        val cp = IntArray(data.size)
-        System.arraycopy(data, 0, cp, 0, data.size)
-        return IntArrayTag(cp)
+        return data.joinToString(
+            prefix = "[I;",
+            separator = ",",
+            postfix = "]"
+        )
     }
 }

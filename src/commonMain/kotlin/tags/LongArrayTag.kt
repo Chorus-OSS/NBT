@@ -3,12 +3,12 @@ package org.chorus_oss.nbt.tags
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagType
 
-data class ByteArrayTag(private val data: List<Byte> = listOf()) : Tag, List<Byte> by data {
-    override val type: TagType = TagType.ByteArray
+data class LongArrayTag(private val data: List<Long> = listOf()) : Tag, List<Long> by data {
+    override val type: TagType = TagType.LongArray
 
     override fun toString(): String {
         return data.joinToString(
-            prefix = "[B;",
+            prefix = "[L;",
             separator = ",",
             postfix = "]"
         )

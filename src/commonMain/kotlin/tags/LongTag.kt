@@ -1,49 +1,12 @@
-package org.chorus_oss.chorus.nbt.tag
+package org.chorus_oss.nbt.tags
 
-import org.chorus_oss.nbt.tags.NumberTag
-import java.util.*
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagType
 
-class LongTag : NumberTag<Long> {
-    override var data: Long = 0
-
-    constructor()
-
-    constructor(data: Long) {
-        this.data = data
-    }
-
-    override fun parseValue(): Long {
-        return this.data
-    }
-
-    override val id: Byte
-        get() = TAG_LONG
+data class LongTag(val data: Long = 0L) : Tag {
+    override val type: TagType = TagType.Long
 
     override fun toString(): String {
-        return "LongTag  (data:$data)"
-    }
-
-    override fun toSNBT(): String {
-        return data.toString() + "L"
-    }
-
-    override fun toSNBT(space: Int): String {
-        return data.toString() + "L"
-    }
-
-    override fun copy(): LongTag {
-        return LongTag(data)
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other)) {
-            val o = other as LongTag
-            return data == o.data
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(super.hashCode(), data, id)
+        return "${data}L"
     }
 }

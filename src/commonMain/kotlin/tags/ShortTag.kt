@@ -1,48 +1,12 @@
 package org.chorus_oss.nbt.tags
 
-import java.util.*
+import org.chorus_oss.nbt.Tag
+import org.chorus_oss.nbt.TagType
 
-class ShortTag : NumberTag<Short> {
-    override var data: Short = 0
-
-    constructor()
-
-    constructor(data: Int) {
-        this.data = data.toShort()
-    }
-
-    override fun parseValue(): Short {
-        return data
-    }
-
-    override val id: Byte
-        get() = TAG_SHORT
+data class ShortTag(val data: Short = 0) : Tag {
+    override val type: TagType = TagType.Short
 
     override fun toString(): String {
-        return "ShortTag (data: $data)"
-    }
-
-    override fun toSNBT(): String {
-        return data.toString() + "s"
-    }
-
-    override fun toSNBT(space: Int): String {
-        return data.toString() + "s"
-    }
-
-    override fun copy(): ShortTag {
-        return ShortTag(data.toInt())
-    }
-
-    override fun equals(other: Any?): Boolean {
-        if (super.equals(other)) {
-            val o = other as ShortTag
-            return data == o.data
-        }
-        return false
-    }
-
-    override fun hashCode(): Int {
-        return Objects.hash(super.hashCode(), data, id)
+        return "${data}s"
     }
 }
