@@ -8,6 +8,7 @@ description = "NBT"
 
 repositories {
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 kotlin {
@@ -22,11 +23,11 @@ kotlin {
             dependencies {
                 implementation(libs.kotlin.stdlib)
                 implementation(libs.kotlinx.io)
+                implementation(libs.varlen)
             }
         }
 
         val commonTest by getting {
-            dependsOn(commonMain)
             dependencies {
                 implementation(libs.kotlin.test)
             }

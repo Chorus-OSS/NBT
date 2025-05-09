@@ -13,5 +13,15 @@ enum class TagType {
     List,
     Compound,
     IntArray,
-    LongArray,
+    LongArray;
+
+    companion object {
+        fun toByte(value: TagType): kotlin.Byte {
+            return value.ordinal.toByte()
+        }
+
+        fun fromByte(value: kotlin.Byte): TagType {
+            return entries[value.toInt()]
+        }
+    }
 }
