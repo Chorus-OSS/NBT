@@ -9,7 +9,12 @@ interface Tag {
     override fun toString(): String
 
     companion object {
-        fun serialize(value: Tag, stream: Buffer, type: TagSerialization) {
+        fun serialize(value: Tag, stream: Buffer, type: TagSerialization, isRoot: Boolean = false) {
+            if (isRoot) {
+                stream.writeByte(TagType.toByte(value.type))
+                TagHelper.serializeString("", stream, type)
+            }
+
             when (value.type) {
                 TagType.Byte -> ByteTag.serialize(value as ByteTag, stream, type)
                 TagType.Short -> ShortTag.serialize(value as ShortTag, stream, type)
@@ -25,6 +30,13 @@ interface Tag {
                 TagType.LongArray -> LongArrayTag.serialize(value as LongArrayTag, stream, type)
                 else -> Unit
             }
+        }
+
+        fun deserialize(stream: Buffer, type: TagSerialization): Tag {
+            val tagType = TagType.fromByte(stream.readByte())
+            TagHelper.deserializeString(stream, type)
+
+            return deserialize(tagType, stream, type)
         }
 
         fun deserialize(value: TagType, stream: Buffer, type: TagSerialization): Tag {

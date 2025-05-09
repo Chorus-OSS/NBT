@@ -1,10 +1,7 @@
 package org.chorus_oss.nbt.tags
 
 import kotlinx.io.*
-import org.chorus_oss.nbt.Tag
-import org.chorus_oss.nbt.TagCodec
-import org.chorus_oss.nbt.TagSerialization
-import org.chorus_oss.nbt.TagType
+import org.chorus_oss.nbt.*
 import org.chorus_oss.varlen.types.readIntVar
 import org.chorus_oss.varlen.types.readLongVar
 import org.chorus_oss.varlen.types.writeIntVar
@@ -21,34 +18,22 @@ data class LongArrayTag(private val data: List<Long> = listOf()) : Tag, List<Lon
 
     companion object : TagCodec<LongArrayTag> {
         override fun serialize(value: LongArrayTag, stream: Buffer, type: TagSerialization) {
-            when (type) {
-                TagSerialization.BE -> stream.writeInt(value.size)
-                TagSerialization.LE -> stream.writeIntLe(value.size)
-                TagSerialization.NetworkLE -> stream.writeIntVar(value.size)
-            }
-
-            for (long in value) {
+            TagHelper.serializeList(value, stream, type) { long, st ->
                 when (type) {
-                    TagSerialization.BE -> stream.writeLong(long)
-                    TagSerialization.LE -> stream.writeLongLe(long)
-                    TagSerialization.NetworkLE -> stream.writeLongVar(long)
+                    TagSerialization.BE -> st.writeLong(long)
+                    TagSerialization.LE -> st.writeLongLe(long)
+                    TagSerialization.NetworkLE -> st.writeLongVar(long)
                 }
             }
         }
 
         override fun deserialize(stream: Buffer, type: TagSerialization): LongArrayTag {
-            val len = when (type) {
-                TagSerialization.BE -> stream.readInt()
-                TagSerialization.LE -> stream.readIntLe()
-                TagSerialization.NetworkLE -> stream.readIntVar()
-            }
-
             return LongArrayTag(
-                List(len) {
+                TagHelper.deserializeList(stream, type) {
                     when (type) {
-                        TagSerialization.BE -> stream.readLong()
-                        TagSerialization.LE -> stream.readLongLe()
-                        TagSerialization.NetworkLE -> stream.readLongVar()
+                        TagSerialization.BE -> it.readLong()
+                        TagSerialization.LE -> it.readLongLe()
+                        TagSerialization.NetworkLE -> it.readLongVar()
                     }
                 }
             )
