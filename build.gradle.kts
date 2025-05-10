@@ -18,6 +18,7 @@ kotlin {
     mingwX64()
 
     // TODO: Add more supported platforms
+    // Open an issue if you want a platform to be added.
 
     sourceSets {
         val commonMain by getting {
