@@ -1,6 +1,7 @@
 package org.chorus_oss.nbt.tags
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagCodec
 import org.chorus_oss.nbt.TagSerialization
@@ -12,8 +13,8 @@ class EndTag : Tag {
     override fun toString(): String = ""
 
     companion object : TagCodec<EndTag> {
-        override fun serialize(value: EndTag, stream: Buffer, type: TagSerialization) = Unit
+        override fun serialize(value: EndTag, stream: Sink, type: TagSerialization) = Unit
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): EndTag = EndTag()
+        override fun deserialize(stream: Source, type: TagSerialization): EndTag = EndTag()
     }
 }

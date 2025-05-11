@@ -1,6 +1,7 @@
 package org.chorus_oss.nbt
 
-import kotlinx.io.Buffer
+import kotlinx.io.Sink
+import kotlinx.io.Source
 import org.chorus_oss.nbt.tags.*
 
 interface Tag {
@@ -9,7 +10,7 @@ interface Tag {
     override fun toString(): String
 
     companion object {
-        fun serialize(value: Tag, stream: Buffer, type: TagSerialization, isRoot: Boolean = false) {
+        fun serialize(value: Tag, stream: Sink, type: TagSerialization, isRoot: Boolean = false) {
             if (isRoot) {
                 stream.writeByte(TagType.toByte(value.type))
                 TagHelper.serializeString("", stream, type)
@@ -32,14 +33,14 @@ interface Tag {
             }
         }
 
-        fun deserialize(stream: Buffer, type: TagSerialization): Tag {
+        fun deserialize(stream: Source, type: TagSerialization): Tag {
             val tagType = TagType.fromByte(stream.readByte())
             TagHelper.deserializeString(stream, type)
 
             return deserialize(tagType, stream, type)
         }
 
-        fun deserialize(value: TagType, stream: Buffer, type: TagSerialization): Tag {
+        fun deserialize(value: TagType, stream: Source, type: TagSerialization): Tag {
             return when (value) {
                 TagType.Byte -> ByteTag.deserialize(stream, type)
                 TagType.Short -> ShortTag.deserialize(stream, type)

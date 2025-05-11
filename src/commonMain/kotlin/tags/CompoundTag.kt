@@ -1,12 +1,7 @@
 package org.chorus_oss.nbt.tags
 
-import kotlinx.io.Buffer
-import kotlinx.io.readShortLe
-import kotlinx.io.readTo
-import kotlinx.io.writeShortLe
+import kotlinx.io.*
 import org.chorus_oss.nbt.*
-import org.chorus_oss.varlen.types.readUIntVar
-import org.chorus_oss.varlen.types.writeUIntVar
 
 data class CompoundTag(private val data: Map<String, Tag> = mapOf()) : Tag, Map<String, Tag> by data {
     override val type: TagType = TagType.Compound
@@ -16,7 +11,7 @@ data class CompoundTag(private val data: Map<String, Tag> = mapOf()) : Tag, Map<
     ) { "${StringTag(it.key)}:${it.value}" }
 
     companion object : TagCodec<CompoundTag> {
-        override fun serialize(value: CompoundTag, stream: Buffer, type: TagSerialization) {
+        override fun serialize(value: CompoundTag, stream: Sink, type: TagSerialization) {
             for ((k, v) in value.entries) {
                 stream.writeByte(TagType.toByte(v.type))
                 TagHelper.serializeString(k, stream, type)
@@ -25,7 +20,7 @@ data class CompoundTag(private val data: Map<String, Tag> = mapOf()) : Tag, Map<
             stream.writeByte(TagType.toByte(TagType.End))
         }
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): CompoundTag {
+        override fun deserialize(stream: Source, type: TagSerialization): CompoundTag {
             val map = mutableMapOf<String, Tag>()
 
             var tagType: TagType

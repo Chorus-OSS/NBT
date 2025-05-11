@@ -1,8 +1,6 @@
 package org.chorus_oss.nbt.tags
 
-import kotlinx.io.Buffer
-import kotlinx.io.readShortLe
-import kotlinx.io.writeShortLe
+import kotlinx.io.*
 import org.chorus_oss.nbt.Tag
 import org.chorus_oss.nbt.TagCodec
 import org.chorus_oss.nbt.TagSerialization
@@ -14,7 +12,7 @@ data class ShortTag(val data: Short = 0) : Tag {
     override fun toString(): String = "${data}s"
 
     companion object : TagCodec<ShortTag> {
-        override fun serialize(value: ShortTag, stream: Buffer, type: TagSerialization) {
+        override fun serialize(value: ShortTag, stream: Sink, type: TagSerialization) {
             when (type) {
                 TagSerialization.BE -> stream.writeShort(value.data)
                 TagSerialization.LE,
@@ -22,7 +20,7 @@ data class ShortTag(val data: Short = 0) : Tag {
             }
         }
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): ShortTag {
+        override fun deserialize(stream: Source, type: TagSerialization): ShortTag {
             return ShortTag(
                 when (type) {
                     TagSerialization.BE -> stream.readShort()

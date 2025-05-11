@@ -12,7 +12,7 @@ data class FloatTag(val data: Float = 0f) : Tag {
     override fun toString(): String = "${data}f"
 
     companion object : TagCodec<FloatTag> {
-        override fun serialize(value: FloatTag, stream: Buffer, type: TagSerialization) {
+        override fun serialize(value: FloatTag, stream: Sink, type: TagSerialization) {
             when (type) {
                 TagSerialization.BE -> stream.writeFloat(value.data)
                 TagSerialization.LE,
@@ -20,7 +20,7 @@ data class FloatTag(val data: Float = 0f) : Tag {
             }
         }
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): FloatTag {
+        override fun deserialize(stream: Source, type: TagSerialization): FloatTag {
             return FloatTag(
                 when (type) {
                     TagSerialization.BE -> stream.readFloat()

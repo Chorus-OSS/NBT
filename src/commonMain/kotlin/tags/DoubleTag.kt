@@ -12,7 +12,7 @@ data class DoubleTag(val data: Double = 0.0) : Tag {
     override fun toString(): String = "${data}d"
 
     companion object : TagCodec<DoubleTag> {
-        override fun serialize(value: DoubleTag, stream: Buffer, type: TagSerialization) {
+        override fun serialize(value: DoubleTag, stream: Sink, type: TagSerialization) {
             when (type) {
                 TagSerialization.BE -> stream.writeDouble(value.data)
                 TagSerialization.LE,
@@ -20,7 +20,7 @@ data class DoubleTag(val data: Double = 0.0) : Tag {
             }
         }
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): DoubleTag {
+        override fun deserialize(stream: Source, type: TagSerialization): DoubleTag {
             return DoubleTag(
                 when (type) {
                     TagSerialization.BE -> stream.readDouble()

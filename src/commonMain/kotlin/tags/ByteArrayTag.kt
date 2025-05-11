@@ -1,12 +1,7 @@
 package org.chorus_oss.nbt.tags
 
-import kotlinx.io.Buffer
-import kotlinx.io.readIntLe
-import kotlinx.io.readTo
-import kotlinx.io.writeIntLe
+import kotlinx.io.*
 import org.chorus_oss.nbt.*
-import org.chorus_oss.varlen.types.readIntVar
-import org.chorus_oss.varlen.types.writeIntVar
 
 data class ByteArrayTag(private val data: List<Byte> = listOf()) : Tag, List<Byte> by data {
     override val type: TagType = TagType.ByteArray
@@ -18,13 +13,13 @@ data class ByteArrayTag(private val data: List<Byte> = listOf()) : Tag, List<Byt
     )
 
     companion object : TagCodec<ByteArrayTag> {
-        override fun serialize(value: ByteArrayTag, stream: Buffer, type: TagSerialization) {
+        override fun serialize(value: ByteArrayTag, stream: Sink, type: TagSerialization) {
             TagHelper.serializeList(value, stream, type) { byte, st ->
                 st.writeByte(byte)
             }
         }
 
-        override fun deserialize(stream: Buffer, type: TagSerialization): ByteArrayTag {
+        override fun deserialize(stream: Source, type: TagSerialization): ByteArrayTag {
             return ByteArrayTag(
                 TagHelper.deserializeList(stream, type) {
                     it.readByte()
