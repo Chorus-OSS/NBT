@@ -10,10 +10,9 @@ plugins {
 
 description = "NBT library for Kotlin Multiplatform"
 group = "org.chorus-oss"
-version = "1.0.0"
+version = "1.0.1"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
