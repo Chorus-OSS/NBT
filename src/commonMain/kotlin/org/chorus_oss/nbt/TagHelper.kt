@@ -37,12 +37,13 @@ object TagHelper {
     }
 
     fun serializeString(value: String, stream: Sink, type: TagSerialization) {
+        val bytes = value.encodeToByteArray()
         when (type) {
-            TagSerialization.BE -> stream.writeShort(value.length.toShort())
-            TagSerialization.LE -> stream.writeShortLe(value.length.toShort())
-            TagSerialization.NetLE -> stream.writeUIntVar(value.length.toUInt())
+            TagSerialization.BE -> stream.writeShort(bytes.size.toShort())
+            TagSerialization.LE -> stream.writeShortLe(bytes.size.toShort())
+            TagSerialization.NetLE -> stream.writeUIntVar(bytes.size.toUInt())
         }
-        stream.write(value.encodeToByteArray())
+        stream.write(bytes)
     }
 
     fun deserializeString(stream: Source, type: TagSerialization): String {

@@ -13,18 +13,18 @@ data class CompoundTag(private val data: Map<String, Tag> = mapOf()) : Tag, Map<
     companion object : TagCodec<CompoundTag> {
         override fun serialize(value: CompoundTag, stream: Sink, type: TagSerialization) {
             for ((k, v) in value.entries) {
-                stream.writeByte(TagType.toByte(v.type))
+                stream.writeByte(v.type.id)
                 TagHelper.serializeString(k, stream, type)
                 Tag.serialize(v, stream, type)
             }
-            stream.writeByte(TagType.toByte(TagType.End))
+            stream.writeByte(TagType.End.id)
         }
 
         override fun deserialize(stream: Source, type: TagSerialization): CompoundTag {
             val map = mutableMapOf<String, Tag>()
 
             var tagType: TagType
-            while (TagType.fromByte(stream.readByte()).also {
+            while (TagType.from(stream.readByte()).also {
                     tagType = it
                 } != TagType.End) {
                 val k = TagHelper.deserializeString(stream, type)

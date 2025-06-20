@@ -1,27 +1,23 @@
 package org.chorus_oss.nbt
 
-enum class TagType {
-    End,
-    Byte,
-    Short,
-    Int,
-    Long,
-    Float,
-    Double,
-    ByteArray,
-    String,
-    List,
-    Compound,
-    IntArray,
-    LongArray;
+enum class TagType(val id: Byte) {
+    End(0),
+    Byte(1),
+    Short(2),
+    Int(3),
+    Long(4),
+    Float(5),
+    Double(6),
+    ByteArray(7),
+    String(8),
+    List(9),
+    Compound(10),
+    IntArray(11),
+    LongArray(12);
 
     companion object {
-        fun toByte(value: TagType): kotlin.Byte {
-            return value.ordinal.toByte()
-        }
-
-        fun fromByte(value: kotlin.Byte): TagType {
-            return entries[value.toInt()]
+        fun from(value: Byte): TagType {
+            return entries.find { it.id == value }!!
         }
     }
 }

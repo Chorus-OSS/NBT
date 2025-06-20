@@ -12,7 +12,7 @@ interface Tag {
     companion object {
         fun serialize(value: Tag, stream: Sink, type: TagSerialization, isRoot: Boolean = false) {
             if (isRoot) {
-                stream.writeByte(TagType.toByte(value.type))
+                stream.writeByte(value.type.id)
                 TagHelper.serializeString("", stream, type)
             }
 
@@ -34,7 +34,7 @@ interface Tag {
         }
 
         fun deserialize(stream: Source, type: TagSerialization): Tag {
-            val tagType = TagType.fromByte(stream.readByte())
+            val tagType = TagType.from(stream.readByte())
             TagHelper.deserializeString(stream, type)
 
             return deserialize(tagType, stream, type)

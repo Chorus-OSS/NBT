@@ -18,7 +18,7 @@ data class ListTag<out T : Tag>(private val list: List<T> = listOf()) : Tag, Lis
 
     companion object : TagCodec<ListTag<*>> {
         override fun serialize(value: ListTag<*>, stream: Sink, type: TagSerialization) {
-            stream.writeByte(TagType.toByte(value.entryType))
+            stream.writeByte(value.entryType.id)
 
             TagHelper.serializeList(value, stream, type) { tag, st ->
                 Tag.serialize(tag, st, type)
@@ -26,7 +26,7 @@ data class ListTag<out T : Tag>(private val list: List<T> = listOf()) : Tag, Lis
         }
 
         override fun deserialize(stream: Source, type: TagSerialization): ListTag<*> {
-            val entryType = TagType.fromByte(stream.readByte())
+            val entryType = TagType.from(stream.readByte())
 
             return ListTag(
                 TagHelper.deserializeList(stream, type) {
