@@ -3,14 +3,14 @@ import com.vanniktech.maven.publish.KotlinMultiplatform
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
-    kotlin("multiplatform") version "2.1.10"
-    id("org.jetbrains.dokka") version "2.0.0"
-    id("com.vanniktech.maven.publish") version "0.32.0"
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.dokka)
+    alias(libs.plugins.maven.publish)
 }
 
 description = "NBT library for Kotlin Multiplatform"
 group = "org.chorus-oss"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     mavenCentral()
@@ -29,6 +29,12 @@ kotlin {
             dependencies {
                 api(libs.kotlinx.io)
                 implementation(libs.varlen)
+            }
+        }
+
+        val commonTest by getting {
+            dependencies {
+                implementation(libs.kotlin.test)
             }
         }
     }
